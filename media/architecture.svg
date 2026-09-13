@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="760" viewBox="0 0 1400 760">
+<defs>
+<style>
+.bg{fill:#f3f6f4}.box{fill:#fff;stroke:#bdcbc6;stroke-width:2.5}.linux{fill:#e4f2ef;stroke:#0b5d55;stroke-width:3}.mcu{fill:#fff3d6;stroke:#a86600;stroke-width:3}.client{fill:#e9f3f9;stroke:#256f9e;stroke-width:3}.internet{fill:#fff;stroke:#bdcbc6;stroke-width:2.5}
+.title{font:700 34px Arial,sans-serif;fill:#102322}.h{font:700 24px Arial,sans-serif;fill:#102322}.t{font:18px Arial,sans-serif;fill:#445b59}.s{font:15px Arial,sans-serif;fill:#6b7e7b}.a{stroke:#0b5d55;stroke-width:5;fill:none;marker-end:url(#g)}.b{stroke:#bd2d35;stroke-width:6;fill:none;marker-end:url(#r)}
+</style>
+<marker id="g" markerWidth="12" markerHeight="12" refX="10" refY="4" orient="auto"><path d="M0,0 L0,8 L11,4 z" fill="#0b5d55"/></marker>
+<marker id="r" markerWidth="12" markerHeight="12" refX="10" refY="4" orient="auto"><path d="M0,0 L0,8 L11,4 z" fill="#bd2d35"/></marker>
+</defs>
+<rect class="bg" width="1400" height="760"/>
+<text x="70" y="70" class="title">Relief Node system architecture</text>
+
+<rect x="70" y="205" width="260" height="190" rx="18" class="box client"/>
+<text x="105" y="255" class="h">Phone / browser</text>
+<text x="105" y="300" class="t">Local WebUI</text>
+<text x="105" y="335" class="t">No app install</text>
+<text x="105" y="370" class="t">Notices + check-ins</text>
+
+<rect x="440" y="125" width="430" height="390" rx="18" class="box linux"/>
+<text x="485" y="180" class="h">Arduino UNO Q — Linux side</text>
+<text x="485" y="230" class="t">Python backend + WebUI</text>
+<text x="485" y="268" class="t">SQLite local storage</text>
+<text x="485" y="306" class="t">Climate fetch + offline cache</text>
+<text x="485" y="344" class="t">Qwen local GenAI</text>
+<text x="485" y="382" class="t">Admin controls + needs clustering</text>
+<text x="485" y="420" class="t">RGB LEDs 1–2</text>
+
+<rect x="1030" y="205" width="300" height="260" rx="18" class="box mcu"/>
+<text x="1070" y="255" class="h">STM32 MCU side</text>
+<text x="1070" y="305" class="t">8×13 LED matrix</text>
+<text x="1070" y="343" class="t">RGB LEDs 3–4</text>
+<text x="1070" y="381" class="t">SAFE / ALERT / EMERGENCY</text>
+<text x="1070" y="419" class="t">Fast local patterns</text>
+
+<path d="M330 300 H440" class="a"/>
+<text x="338" y="279" class="s">local HTTP / WebSocket</text>
+
+<path d="M870 322 H1030" class="b"/>
+<text x="905" y="294" class="s" fill="#bd2d35">Arduino Bridge</text>
+<text x="900" y="350" class="s" fill="#bd2d35">Linux ↔ MCU communication</text>
+
+<rect x="440" y="610" width="430" height="95" rx="18" class="box internet"/>
+<text x="485" y="650" class="h">Optional internet connection</text>
+<text x="485" y="682" class="t">Open-Meteo weather + NWS public alerts</text>
+<path d="M655 610 V515" class="a"/>
+
+<text x="70" y="715" class="s">Core hardware: one Arduino UNO Q, USB-C power, and a phone/laptop. No external circuit is required.</text>
+</svg>

@@ -1,0 +1,8 @@
+name: Relief Node Climate
+icon: 🆘
+description: Offline-first emergency information, climate logging, community check-in, and on-device GenAI action cards for Arduino UNO Q.
+
+bricks:
+  - arduino:web_ui: {}
+  - arduino:llm:
+      model: llamacpp:Qwen3.5-0.8B-Q4_0

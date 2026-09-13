@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0b2d2b" />
+  <meta name="color-scheme" content="light" />
+  <title>Relief Node</title>
+  <!-- Pico CSS is a progressive enhancement when internet is available. -->
+  <link rel="preload" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2.1.1/css/pico.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+  <!-- The local stylesheet contains the complete offline-safe theme/fallback. -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="app-header">
+    <div class="header-inner">
+      <div class="brand-lockup">
+        <img class="brand-logo" src="logo.png" alt="Relief Node logo" />
+        <div>
+          <div class="brand-name" data-i18n="appTitle">Relief Node</div>
+          <div class="brand-subtitle" data-i18n="appSubtitle">Local emergency & climate response hub</div>
+        </div>
+      </div>
+
+      <div class="header-controls">
+        <label class="language-control">
+          <span class="sr-only" data-i18n="languageLabel">Language</span>
+          <select id="uiLanguage" aria-label="Interface language">
+            <option value="en">English</option>
+            <option value="es">Español</option>
+            <option value="ar">العربية</option>
+            <option value="hi">हिन्दी</option>
+            <option value="fr">Français</option>
+          </select>
+        </label>
+        <button id="adminModePill" class="status-chip admin-chip" type="button" hidden title="Lock admin mode">
+          <span class="status-dot"></span><span data-i18n="adminMode">Admin mode</span>
+        </button>
+        <div id="connectionPill" class="status-chip offline-chip" role="status">
+          <span class="status-dot"></span><span data-i18n="connecting">Connecting…</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="dashboard-shell">
+    <section class="content-stack">
+      <article id="noticeCard" class="panel notice-panel severity-safe">
+        <div class="panel-kicker-row">
+          <span class="panel-kicker" data-i18n="latestNotice">Latest notice</span>
+          <span id="severityBadge" class="severity-badge badge-safe" data-i18n="safeStatus">Safe</span>
+        </div>
+        <h1 id="noticeTitle" class="notice-title" data-i18n="loading">Loading…</h1>
+        <p id="noticeBody" class="notice-body" data-i18n="connectingToNode">Connecting to the Relief Node.</p>
+        <div class="notice-meta">
+          <span id="noticeTime">—</span>
+          <span class="meta-divider" aria-hidden="true">•</span>
+          <span data-i18n="localFirst">Local-first delivery</span>
+        </div>
+      </article>
+
+      <article class="panel climate-panel">
+        <div class="panel-heading">
+          <div>
+            <span class="panel-kicker" data-i18n="climateLog">Climate & public alert log</span>
+            <h2 id="climateLocation">Location not configured</h2>
+            <p id="climateStatus" class="supporting">Organizer can set a location below.</p>
+          </div>
+          <span id="climateSourceBadge" class="source-badge" data-i18n="offlineReady">Offline ready</span>
+        </div>
+
+        <div class="weather-grid">
+          <div class="metric metric-primary">
+            <span class="metric-label" data-i18n="temperature">Temperature</span>
+            <div><strong id="temperatureValue">—</strong><span id="temperatureUnit"></span></div>
+          </div>
+          <div class="metric"><span class="metric-label" data-i18n="condition">Condition</span><strong id="conditionValue">—</strong></div>
+          <div class="metric"><span class="metric-label" data-i18n="humidity">Humidity</span><strong id="humidityValue">—</strong></div>
+          <div class="metric"><span class="metric-label" data-i18n="wind">Wind</span><strong id="windValue">—</strong></div>
+          <div class="metric"><span class="metric-label" data-i18n="precipitation">Precipitation</span><strong id="precipValue">—</strong></div>
+          <div class="metric"><span class="metric-label" data-i18n="today">Today</span><strong id="forecastValue">—</strong></div>
+        </div>
+
+        <div class="subsection-header">
+          <div>
+            <h3 data-i18n="publicAlerts">Public emergency/weather alerts</h3>
+            <p class="supporting compact" data-i18n="publicAlertsHelp">Official source text is preserved as received.</p>
+          </div>
+          <span id="alertCount" class="count-badge">0 active</span>
+        </div>
+        <div id="publicAlerts" class="alert-list"><p class="empty-state" data-i18n="noAlertData">No alert data loaded yet.</p></div>
+
+        <details class="data-details">
+          <summary data-i18n="climateHistory">Climate log history</summary>
+          <div class="table-wrap">
+            <table>
+              <thead><tr>
+                <th data-i18n="time">Time</th><th data-i18n="tempShort">Temp</th><th data-i18n="humidity">Humidity</th><th data-i18n="wind">Wind</th><th data-i18n="alerts">Alerts</th>
+              </tr></thead>
+              <tbody id="climateHistory"></tbody>
+            </table>
+          </div>
+        </details>
+      </article>
+
+      <article class="panel checkin-panel">
+        <div class="panel-heading simple">
+          <div>
+            <span class="panel-kicker" data-i18n="checkinLabel">Community check-in</span>
+            <h2 data-i18n="howAreYou">How are you?</h2>
+            <p class="supporting" data-i18n="checkinPrivacy">Your check-in is stored locally on this Relief Node.</p>
+          </div>
+        </div>
+        <div class="field-grid">
+          <label><span data-i18n="nameLabel">Name or identifier</span><input id="nameInput" maxlength="40" data-i18n-placeholder="optional" placeholder="Optional" /></label>
+          <label><span data-i18n="noteLabel">Short note</span><input id="noteInput" maxlength="180" data-i18n-placeholder="notePlaceholder" placeholder="e.g. Room 4, need water" /></label>
+        </div>
+        <div class="checkin-buttons">
+          <button class="status-button safe" data-status="safe"><span class="button-icon">✓</span><span data-i18n="safeButton">I’m safe</span></button>
+          <button class="status-button help" data-status="help"><span class="button-icon">!</span><span data-i18n="helpButton">I need help</span></button>
+          <button class="status-button supplies" data-status="supplies"><span class="button-icon">□</span><span data-i18n="suppliesButton">I need supplies</span></button>
+        </div>
+      </article>
+
+      <article class="panel summary-panel">
+        <span class="panel-kicker" data-i18n="localSummary">Local summary</span>
+        <div class="stats">
+          <div class="stat"><span id="countTotal">0</span><small data-i18n="total">Total</small></div>
+          <div class="stat safe-stat"><span id="countSafe">0</span><small data-i18n="safeStatus">Safe</small></div>
+          <div class="stat help-stat"><span id="countHelp">0</span><small data-i18n="needHelp">Need help</small></div>
+          <div class="stat supplies-stat"><span id="countSupplies">0</span><small data-i18n="suppliesStatus">Supplies</small></div>
+        </div>
+      </article>
+    </section>
+
+    <aside class="control-stack">
+      <article class="panel admin-panel">
+        <div class="panel-heading simple">
+          <div>
+            <span class="panel-kicker" data-i18n="organizer">Organizer</span>
+            <h2 data-i18n="emergencyControls">Emergency controls</h2>
+          </div>
+          <span id="adminInlineStatus" class="admin-inline-status" data-i18n="adminLocked">Locked</span>
+        </div>
+
+        <div class="admin-unlock">
+          <label class="pin-field"><span data-i18n="organizerPin">Organizer PIN</span>
+            <div class="pin-input-wrap">
+              <input id="pinInput" type="password" inputmode="numeric" autocomplete="off" data-i18n-placeholder="pinPlaceholder" placeholder="Enter PIN" />
+              <button id="togglePinVisibility" class="pin-visibility" type="button" aria-label="Show PIN" title="Show PIN">
+                <svg class="eye-icon eye-open" viewBox="0 0 24 24" aria-hidden="true" hidden><path d="M2.2 12s3.6-6 9.8-6 9.8 6 9.8 6-3.6 6-9.8 6-9.8-6-9.8-6Z"/><circle cx="12" cy="12" r="3"/></svg>
+                <svg class="eye-icon eye-closed" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3l18 18M10.6 6.2A10.8 10.8 0 0 1 12 6c6.2 0 9.8 6 9.8 6a14.8 14.8 0 0 1-3 3.5M6.1 6.2C3.5 8 2.2 12 2.2 12s3.6 6 9.8 6a10.7 10.7 0 0 0 4-.8M9.9 9.9a3 3 0 0 0 4.2 4.2"/></svg>
+              </button>
+            </div>
+          </label>
+          <button id="verifyAdminButton" class="secondary-button" type="button" data-i18n="unlock">Unlock</button>
+        </div>
+
+        <details open>
+          <summary data-i18n="composeNotice">Compose emergency notice</summary>
+          <label><span data-i18n="noticeTitleLabel">Notice title</span><input id="adminTitle" maxlength="100" data-i18n-placeholder="noticeTitlePlaceholder" placeholder="Weather alert" /></label>
+          <label><span data-i18n="sourceInstructions">Source instructions / notice</span><textarea id="adminBody" maxlength="1600" rows="7" data-i18n-placeholder="instructionsPlaceholder" placeholder="Enter verified emergency instructions."></textarea></label>
+
+          <div class="ai-tools">
+            <div class="tool-heading"><span data-i18n="aiAssist">On-device AI assist</span><span class="local-badge" data-i18n="local">LOCAL</span></div>
+            <button id="summarizeButton" class="secondary-button" data-i18n="makeActionCard">Make short action card</button>
+            <div class="translation-row">
+              <label class="translation-target">
+                <span data-i18n="targetLanguage">Target language</span>
+                <select id="translationLanguage">
+                  <option value="English">English</option>
+                  <option value="Spanish" selected>Español — Spanish</option>
+                  <option value="Arabic">العربية — Arabic</option>
+                  <option value="Hindi">हिन्दी — Hindi</option>
+                  <option value="French">Français — French</option>
+                  <option value="Urdu">اردو — Urdu</option>
+                  <option value="Portuguese">Português — Portuguese</option>
+                  <option value="Chinese (Simplified)">简体中文 — Chinese (Simplified)</option>
+                  <option value="Chinese (Traditional)">繁體中文 — Chinese (Traditional)</option>
+                  <option value="Bengali">বাংলা — Bengali</option>
+                  <option value="Punjabi">ਪੰਜਾਬੀ — Punjabi</option>
+                  <option value="German">Deutsch — German</option>
+                  <option value="Italian">Italiano — Italian</option>
+                  <option value="Japanese">日本語 — Japanese</option>
+                  <option value="Korean">한국어 — Korean</option>
+                  <option value="Turkish">Türkçe — Turkish</option>
+                  <option value="Vietnamese">Tiếng Việt — Vietnamese</option>
+                  <option value="Indonesian">Bahasa Indonesia — Indonesian</option>
+                  <option value="Swahili">Kiswahili — Swahili</option>
+                  <option value="Tamil">தமிழ் — Tamil</option>
+                  <option value="Telugu">తెలుగు — Telugu</option>
+                </select>
+              </label>
+              <button id="translateButton" class="secondary-button translate-button" type="button">
+                <span id="translateButtonSpinner" class="translation-spinner" aria-hidden="true" hidden></span>
+                <span id="translateButtonIcon" class="translate-button-icon" aria-hidden="true">↗</span>
+                <span id="translateButtonText" data-i18n="translateDraft">Translate draft</span>
+              </button>
+            </div>
+            <div id="translationStatus" class="translation-status ready" role="status" aria-live="polite" aria-atomic="true">
+              <span class="translation-state-icon" aria-hidden="true">●</span>
+              <span id="translationStatusText" data-i18n="translationReady">Translation ready</span>
+            </div>
+            <p id="aiModeText" class="helper-text" data-i18n="aiDraftSafety">On-device GenAI creates drafts locally. Nothing is published until the organizer approves it.</p>
+          </div>
+
+          <label><span data-i18n="severity">Severity</span>
+            <select id="adminSeverity">
+              <option value="safe" data-i18n="safeNormal">Safe / normal</option>
+              <option value="alert" data-i18n="alertStatus">Alert</option>
+              <option value="emergency" data-i18n="emergencyStatus">Emergency</option>
+            </select>
+          </label>
+          <button id="publishButton" class="primary-action" data-i18n="approvePublish">Approve & publish notice</button>
+          <div class="mode-buttons">
+            <button data-mode="safe" class="board-mode safe-mode" data-i18n="boardSafe">Board safe</button>
+            <button data-mode="alert" class="board-mode alert-mode" data-i18n="boardAlert">Board alert</button>
+            <button data-mode="emergency" class="board-mode emergency-mode" data-i18n="boardEmergency">Board emergency</button>
+          </div>
+          <button id="clearButton" class="danger-outline" data-i18n="clearCheckins">Clear check-ins</button>
+        </details>
+      </article>
+
+      <article class="panel">
+        <span class="panel-kicker" data-i18n="climateSettings">Climate settings</span>
+        <details open>
+          <summary data-i18n="publicDataSetup">Public-data logger setup</summary>
+          <label><span data-i18n="locationLabel">Location label</span><input id="locationName" maxlength="100" data-i18n-placeholder="locationPlaceholder" placeholder="Community Center" /></label>
+          <div class="coordinate-grid">
+            <label><span data-i18n="latitude">Latitude</span><input id="latitudeInput" inputmode="decimal" placeholder="47.6062" /></label>
+            <label><span data-i18n="longitude">Longitude</span><input id="longitudeInput" inputmode="decimal" placeholder="-122.3321" /></label>
+          </div>
+          <button id="phoneLocationButton" class="secondary-button" data-i18n="usePhoneLocation">Use this phone’s location</button>
+          <label><span data-i18n="units">Units</span><select id="unitsInput"><option value="F">°F / mph / inches</option><option value="C">°C / km/h / mm</option></select></label>
+          <div class="inline-buttons">
+            <button id="saveClimateButton" class="primary-action" data-i18n="saveFetch">Save & fetch</button>
+            <button id="refreshClimateButton" class="secondary-button" data-i18n="refreshNow">Refresh now</button>
+          </div>
+          <p class="helper-text" data-i18n="climateSourceHelp">Weather: Open-Meteo. U.S. alerts: National Weather Service. Last successful data remains cached locally.</p>
+        </details>
+      </article>
+
+      <article class="panel">
+        <span class="panel-kicker" data-i18n="onDeviceGenAI">On-device GenAI</span>
+        <details open>
+          <summary data-i18n="localLlmStatus">Local LLM status</summary>
+          <div class="ai-status-box">
+            <span class="ai-orb" aria-hidden="true"></span>
+            <div><strong id="localAiStatus" data-i18n="configured">Configured</strong><span id="localAiModel" class="helper-text" data-i18n="loadingModel">Loading model information…</span></div>
+          </div>
+          <p class="helper-text" data-i18n="localLlmHelp">The model runs on the UNO Q itself. No API key or internet is required after the one-time model download.</p>
+          <button id="testLocalAiButton" class="secondary-button" data-i18n="testLocalAi">Test local AI</button>
+        </details>
+      </article>
+
+      <article class="panel">
+        <span class="panel-kicker" data-i18n="needsClustering">Needs clustering</span>
+        <div id="needsSummary"><p class="empty-state" data-i18n="noCommunityNeeds">No community needs yet.</p></div>
+      </article>
+
+      <article class="panel">
+        <span class="panel-kicker" data-i18n="recentCheckins">Recent check-ins</span>
+        <div id="checkinList" class="checkin-list"><p class="empty-state" data-i18n="noCheckins">No check-ins yet.</p></div>
+      </article>
+
+      <article class="panel hotspot-panel">
+        <span class="panel-kicker" data-i18n="offlineHotspot">Offline hotspot</span>
+        <h3 data-i18n="standaloneNetwork">Standalone network mode</h3>
+        <p class="supporting" data-i18n="hotspotHelp">Run the included host-side setup script from the UNO Q shell, not from App Lab.</p>
+        <code class="command">sudo ~/ArduinoApps/&lt;your-app&gt;/host_tools/setup_relief_hotspot.sh</code>
+      </article>
+    </aside>
+  
+  </main>
+
+  <footer class="app-footer">
+    <div class="footer-inner">
+      <p class="disclaimer-text" data-i18n="aiDisclaimer">AI-generated summaries and translations may occasionally be incomplete or inaccurate. Always verify critical emergency information before acting or publishing.</p>
+    </div>
+  </footer>
+
+  <div id="toast" class="toast" hidden role="status" aria-live="polite"></div>
+
+  <script src="webui.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
