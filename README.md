@@ -111,6 +111,7 @@ The board itself communicates the current state without requiring someone to loo
 | New HELP request | Temporary help pattern | All four pulse magenta, then return to the previous state |
 
 ![Indicator](/media/IMG_5431.PNG)
+![Relief Node system architecture](media/architecture.svg)
 
 ## Community check-ins
 
@@ -375,6 +376,7 @@ relief-node-uno-q/
 ├── media/
 │   ├── architecture.svg
 │   ├── relief-node-cover.png
+│   ├── xxx.png
 │   └── relief-node-logo.png
 └── release/
     └── UPLOAD_THIS_TO_ARDUINO_APP_LAB.zip
