@@ -15,8 +15,6 @@ It turns a single UNO Q into a local web server, status beacon, climate-informat
 
 [![Relief Node: A Board-Only Emergency Info and Check-In Hub - Demo + Explanation](https://img.youtube.com/vi/iE9aYf_gtv0/maxresdefault.jpg)](https://youtu.be/iE9aYf_gtv0)
 
-[Watch the full demo and explanation on YouTube](https://youtu.be/iE9aYf_gtv0)
-
 - **Only Demo Video:** [Relief Node: A Board-Only Emergency Info and Check-In Hub Demo Video](https://youtu.be/DjlyEn-Kum8)
 
 ## The problem
