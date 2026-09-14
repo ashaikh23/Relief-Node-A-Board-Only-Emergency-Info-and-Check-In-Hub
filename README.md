@@ -375,7 +375,7 @@ relief-node-uno-q/
 ├── media/
 │   ├── architecture.svg
 │   ├── relief-node-cover.png
-│   ├── xxx.png
+│   ├── IMG_5431.PNG
 │   └── relief-node-logo.png
 └── release/
     └── UPLOAD_THIS_TO_ARDUINO_APP_LAB.zip
