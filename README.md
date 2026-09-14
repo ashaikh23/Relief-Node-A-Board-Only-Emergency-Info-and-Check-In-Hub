@@ -110,8 +110,7 @@ The board itself communicates the current state without requiring someone to loo
 | EMERGENCY | Three exclamation marks | All four blink red |
 | New HELP request | Temporary help pattern | All four pulse magenta, then return to the previous state |
 
-![Indicator](/media/IMG_5431.PNG)
-![Relief Node system architecture](media/architecture.svg)
+![Indicator](media/IMG_5431.PNG)
 
 ## Community check-ins
 
